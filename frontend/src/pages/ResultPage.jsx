@@ -1,32 +1,34 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { CheckCircle2, AlertCircle, LayoutDashboard, RefreshCw, ChevronRight } from 'lucide-react';
+import ThemeToggle from '../components/ThemeToggle';
 
 const ResultPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
   // --- STRICT CRASH PREVENTION ---
-  // Access data safely from router state
   const data = location.state;
 
-  // Fallback if no data is provided (direct access prevention)
   if (!data) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 p-6">
-        <div className="w-full max-w-md bg-white dark:bg-gray-800 rounded-3xl p-8 shadow-xl border border-gray-100 dark:border-gray-700 text-center">
+      <div className="min-h-screen flex items-center justify-center p-6 transition-colors duration-300"
+           style={{ backgroundColor: 'var(--bg)' }}>
+        <div className="w-full max-w-md rounded-3xl p-8 shadow-xl border text-center transition-colors duration-300"
+             style={{ backgroundColor: 'var(--card)', borderColor: 'var(--border)' }}>
           <div className="flex justify-center mb-6">
-            <div className="p-4 bg-orange-50 dark:bg-orange-900/20 text-orange-500 rounded-full">
+            <div className="p-4 rounded-full" style={{ backgroundColor: 'rgba(249, 115, 22, 0.1)', color: '#f97316' }}>
               <AlertCircle size={48} />
             </div>
           </div>
-          <h1 className="text-2xl font-bold mb-2">No result available</h1>
-          <p className="text-gray-500 dark:text-gray-400 mb-8">
+          <h1 className="text-2xl font-bold mb-2" style={{ color: 'var(--text-primary)' }}>No result available</h1>
+          <p className="mb-8" style={{ color: 'var(--text-secondary)' }}>
             Please perform an analysis to see your results.
           </p>
           <button 
             onClick={() => navigate('/dashboard')}
-            className="w-full py-3 bg-blue-600 text-white rounded-xl font-bold shadow-lg hover:bg-blue-700 transition-all"
+            className="w-full py-4 text-white rounded-xl font-bold shadow-lg hover:brightness-110 transition-all active:scale-95"
+            style={{ backgroundColor: 'var(--primary)' }}
           >
             Go to Dashboard
           </button>
@@ -35,21 +37,28 @@ const ResultPage = () => {
     );
   }
 
-  // Fallback values for stability
   const resultStatus = data?.status || "Unknown";
   const confidence = data?.confidence || 0;
   const isHealthy = resultStatus === "Healthy";
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 p-4 sm:p-6 lg:p-8 animate-in fade-in duration-700">
-      <div className="w-full max-w-lg bg-white dark:bg-gray-800 rounded-[2rem] shadow-2xl border border-gray-100 dark:border-gray-700 overflow-hidden transform transition-all hover:shadow-3xl">
+    <div className="min-h-screen flex items-center justify-center p-4 sm:p-6 lg:p-8 animate-in fade-in duration-700 transition-colors duration-300"
+         style={{ backgroundColor: 'var(--bg)' }}>
+      
+      <div className="absolute top-6 right-6">
+        <ThemeToggle />
+      </div>
+
+      <div className="w-full max-w-lg rounded-[2.5rem] shadow-2xl border overflow-hidden transform transition-all hover:shadow-3xl bg-clip-border"
+           style={{ backgroundColor: 'var(--card)', borderColor: 'var(--border)' }}>
+        
         {/* Header */}
-        <div className="p-8 text-center border-b border-gray-50 dark:border-gray-700 bg-white dark:bg-gray-800/50">
-          <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-gray-900 dark:text-white">
+        <div className="p-8 text-center border-b" style={{ borderColor: 'var(--border)' }}>
+          <h1 className="text-3xl font-black tracking-tight" style={{ color: 'var(--text-primary)' }}>
             Analysis Result
           </h1>
-          <p className="mt-2 text-sm font-medium text-gray-500 dark:text-gray-400">
-            Based on our AI-powered acoustic analysis
+          <p className="mt-2 text-sm font-medium" style={{ color: 'var(--text-secondary)' }}>
+            AI-powered acoustic respiratory screening
           </p>
         </div>
 
@@ -57,36 +66,35 @@ const ResultPage = () => {
         <div className="p-8 sm:p-10 space-y-10">
           {/* Main Status Circle */}
           <div className="flex flex-col items-center">
-            <div className={`relative p-1 rounded-full mb-6 ${isHealthy ? 'bg-emerald-50 content-[""]' : 'bg-red-50'}`}>
-              <div className={`p-6 rounded-full ${isHealthy ? 'bg-emerald-500 text-white shadow-emerald-200' : 'bg-red-500 text-white shadow-red-200'} shadow-xl`}>
-                {isHealthy ? <CheckCircle2 size={56} strokeWidth={2.5} /> : <AlertCircle size={56} strokeWidth={2.5} />}
+            <div className={`relative p-2 rounded-full mb-6 ${isHealthy ? 'bg-emerald-500/10' : 'bg-red-500/10'}`}>
+              <div className={`p-8 rounded-full ${isHealthy ? 'bg-emerald-500 shadow-emerald-500/20' : 'bg-red-500 shadow-red-500/20'} text-white shadow-2xl`}>
+                {isHealthy ? <CheckCircle2 size={64} strokeWidth={2.5} /> : <AlertCircle size={64} strokeWidth={2.5} />}
               </div>
             </div>
             
-            <h2 className={`text-4xl font-black mb-2 tracking-tighter ${isHealthy ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-600 dark:text-red-400'}`}>
+            <h2 className={`text-5xl font-black mb-2 tracking-tighter ${isHealthy ? 'text-emerald-500' : 'text-red-500'}`}>
               {resultStatus}
             </h2>
-            <div className={`px-4 py-1 rounded-full text-xs font-bold uppercase tracking-widest ${isHealthy ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-700'}`}>
-              Condition Detected
+            <div className={`px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest ${isHealthy ? 'bg-emerald-500/10 text-emerald-600' : 'bg-red-500/10 text-red-600'}`}>
+              Outcome Detected
             </div>
           </div>
 
           {/* Confidence Score Section */}
           <div className="space-y-4">
-            <div className="flex justify-between items-end mb-1">
-              <span className="text-sm font-bold text-gray-500 dark:text-gray-400">Acoustic Confidence</span>
-              <span className="text-2xl font-black text-gray-900 dark:text-white">{confidence}%</span>
+            <div className="flex justify-between items-end">
+              <span className="text-sm font-bold uppercase tracking-wider" style={{ color: 'var(--text-secondary)' }}>Analysis Confidence</span>
+              <span className="text-3xl font-black" style={{ color: 'var(--text-primary)' }}>{confidence}%</span>
             </div>
             
-            {/* Simple Progress Bar */}
-            <div className="h-4 w-full bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden p-1">
+            <div className="h-4 w-full rounded-full overflow-hidden p-1" style={{ backgroundColor: 'var(--bg)' }}>
               <div 
-                className={`h-full rounded-full transition-all duration-1000 ease-out ${isHealthy ? 'bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.3)]' : 'bg-red-500 shadow-[0_0_10px_rgba(239,68,68,0.3)]'}`}
+                className={`h-full rounded-full transition-all duration-1000 ease-out animate-shimmer ${isHealthy ? 'bg-emerald-500' : 'bg-red-500'}`}
                 style={{ width: `${confidence}%` }}
               />
             </div>
-            <p className="text-[10px] text-center text-gray-400 font-medium">
-              This result is generated by AI patterns. For a medical diagnosis, please consult a healthcare professional.
+            <p className="text-[11px] text-center font-medium italic" style={{ color: 'var(--text-secondary)' }}>
+              Note: This is an AI assessment. Please consult a doctor for a professional diagnosis.
             </p>
           </div>
 
@@ -94,14 +102,16 @@ const ResultPage = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
             <button
               onClick={() => navigate('/analyze')}
-              className="flex items-center justify-center gap-2 px-6 py-4 rounded-2xl font-bold bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-all border border-blue-100 dark:border-blue-900/30 active:scale-95"
+              className="flex items-center justify-center gap-2 px-6 py-4 rounded-2xl font-bold transition-all border active:scale-95"
+              style={{ backgroundColor: 'var(--bg)', color: 'var(--text-primary)', borderColor: 'var(--border)' }}
             >
               <RefreshCw size={18} />
-              Analyze Again
+              Re-analyze
             </button>
             <button
               onClick={() => navigate('/dashboard')}
-              className="group flex items-center justify-center gap-2 px-6 py-4 rounded-2xl font-bold bg-blue-600 text-white shadow-xl shadow-blue-200/50 dark:shadow-none hover:bg-blue-700 hover:scale-[1.02] transition-all active:scale-95"
+              className="group flex items-center justify-center gap-2 px-6 py-4 rounded-2xl font-bold text-white shadow-xl hover:brightness-110 hover:scale-[1.02] transition-all active:scale-95"
+              style={{ backgroundColor: 'var(--primary)' }}
             >
               <LayoutDashboard size={18} />
               Dashboard
@@ -110,8 +120,8 @@ const ResultPage = () => {
           </div>
         </div>
 
-        {/* Footer Accent */}
-        <div className={`h-2 w-full ${isHealthy ? 'bg-emerald-500' : 'bg-red-500'} opacity-50`} />
+        {/* Footer Accent Line */}
+        <div className={`h-2 w-full ${isHealthy ? 'bg-emerald-500' : 'bg-red-500'}`} />
       </div>
     </div>
   );

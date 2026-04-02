@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import AuthCard from '../components/AuthCard';
 import InputField from '../components/InputField';
-import ThemeToggle from '../components/ThemeToggle';
+import authHero from '../assets/auth-hero.png';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -22,11 +22,12 @@ const Login = () => {
   };
 
   return (
-    <AuthCard title="Welcome back" subtitle="Log in to access your CoughNet dashboard">
-      <div className="absolute top-6 right-6">
-        <ThemeToggle />
-      </div>
-      <form noValidate onSubmit={handleSubmit} className="space-y-6">
+    <AuthCard 
+      title="Welcome back" 
+      subtitle="Enter your credentials to access your CoughNet dashboard."
+      image={authHero}
+    >
+      <form noValidate onSubmit={handleSubmit} className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-1200">
         <InputField
           label="Email address"
           type="email"
@@ -47,42 +48,53 @@ const Login = () => {
         />
 
         <div className="flex items-center justify-between text-sm">
-          <div className="flex items-center">
+          <div className="flex items-center group cursor-pointer">
             <input
               id="remember-me"
               name="remember-me"
               type="checkbox"
-              className="h-4 w-4 rounded border-gray-300 transition-colors"
-              style={{ accentColor: 'var(--primary)' }}
+              className="h-4 w-4 rounded border-gray-300 transition-all cursor-pointer accent-blue-600"
             />
-            <label htmlFor="remember-me" className="ml-2 block" style={{ color: 'var(--text-secondary)' }}>
-              Remember me
+            <label htmlFor="remember-me" className="ml-2 block cursor-pointer transition-colors" style={{ color: 'var(--text-secondary)' }}>
+              Keep me signed in
             </label>
           </div>
-          <a href="#" className="font-semibold transition-colors hover:underline" style={{ color: 'var(--primary)' }}>
+          <a href="#" className="font-bold transition-colors hover:text-blue-500" style={{ color: 'var(--primary)' }}>
             Forgot password?
           </a>
         </div>
 
         <button
           type="submit"
-          className="w-full py-3 rounded-lg font-bold text-white shadow-lg transition-all hover:-translate-y-0.5 active:scale-95"
-          style={{ backgroundColor: 'var(--primary)' }}
+          className="w-full py-4 rounded-xl font-bold text-white shadow-xl transition-all hover:shadow-blue-500/20 hover:-translate-y-1 active:scale-95"
+          style={{ 
+            background: 'linear-gradient(135deg, var(--primary), #1d4ed8)',
+          }}
         >
-          Sign in
+          Sign in to Dashboard
         </button>
 
+        <div className="relative py-4">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t" style={{ borderColor: 'var(--border)' }}></div>
+          </div>
+          <div className="relative flex justify-center text-xs uppercase">
+            <span className="px-2 bg-white dark:bg-slate-900" style={{ color: 'var(--text-secondary)', backgroundColor: 'var(--card)' }}>
+              Or continue with
+            </span>
+          </div>
+        </div>
+
         <p className="text-center text-sm" style={{ color: 'var(--text-secondary)' }}>
-          Don't have an account?{' '}
+          New to CoughNet?{' '}
           <span
             onClick={() => navigate("/signup")}
-            className="font-bold hover:underline cursor-pointer"
+            className="font-bold hover:underline cursor-pointer transition-colors"
             style={{ color: 'var(--primary)' }}
           >
-            Create one for free
+            Create an account
           </span>
         </p>
-
       </form>
     </AuthCard>
   );

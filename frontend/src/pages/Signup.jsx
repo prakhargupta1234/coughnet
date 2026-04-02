@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import AuthCard from '../components/AuthCard';
 import InputField from '../components/InputField';
-import ThemeToggle from '../components/ThemeToggle';
+import authHero from '../assets/auth-hero.png';
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -19,17 +19,17 @@ const Signup = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Validation removed as requested
     console.log('Signup submitted:', formData);
     navigate('/dashboard');
   };
 
   return (
-    <AuthCard title="Join CoughNet" subtitle="Create your medical AI account to start today">
-      <div className="absolute top-6 right-6">
-        <ThemeToggle />
-      </div>
-      <form onSubmit={handleSubmit} className="space-y-4">
+    <AuthCard 
+      title="Create account" 
+      subtitle="Join CoughNet and start screening with AI sound analytics."
+      image={authHero}
+    >
+      <form noValidate onSubmit={handleSubmit} className="space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-1200 overflow-y-auto max-h-[70vh] pr-2">
         <InputField
           label="Full Name"
           type="text"
@@ -67,21 +67,49 @@ const Signup = () => {
           required
         />
 
-        <div className="pt-2">
-          <button
-            type="submit"
-            className="w-full py-3 rounded-lg font-bold text-white shadow-lg transition-all hover:-translate-y-0.5 active:scale-95"
-            style={{ backgroundColor: 'var(--primary)' }}
-          >
-            Create Account
-          </button>
+        <div className="flex items-start py-2">
+          <div className="flex items-center h-5">
+            <input
+              id="terms"
+              name="terms"
+              type="checkbox"
+              className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer accent-blue-600"
+              required
+            />
+          </div>
+          <div className="ml-3 text-sm">
+            <label htmlFor="terms" className="font-medium" style={{ color: 'var(--text-secondary)' }}>
+              I agree to the{' '}
+              <a href="#" className="font-bold hover:underline" style={{ color: 'var(--primary)' }}>
+                Terms
+              </a>{' '}
+              and{' '}
+              <a href="#" className="font-bold hover:underline" style={{ color: 'var(--primary)' }}>
+                Privacy
+              </a>
+            </label>
+          </div>
         </div>
 
-        <p className="text-center text-sm" style={{ color: 'var(--text-secondary)' }}>
+        <button
+          type="submit"
+          className="w-full py-4 rounded-xl font-bold text-white shadow-xl transition-all hover:shadow-blue-500/20 hover:-translate-y-1 active:scale-95"
+          style={{ 
+            background: 'linear-gradient(135deg, var(--primary), #1d4ed8)',
+          }}
+        >
+          Create Free Account
+        </button>
+
+        <p className="text-center text-sm pb-4" style={{ color: 'var(--text-secondary)' }}>
           Already have an account?{' '}
-          <Link to="/login" className="font-bold hover:underline" style={{ color: 'var(--primary)' }}>
+          <span
+            onClick={() => navigate("/login")}
+            className="font-bold hover:underline cursor-pointer transition-colors"
+            style={{ color: 'var(--primary)' }}
+          >
             Sign in here
-          </Link>
+          </span>
         </p>
       </form>
     </AuthCard>
