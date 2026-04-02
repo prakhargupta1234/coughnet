@@ -1,217 +1,308 @@
-import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { 
-  BarChart, 
+  LayoutDashboard, 
+  Microscope, 
+  History, 
+  Info, 
+  HelpCircle, 
+  LogOut, 
+  User, 
+  Search, 
+  Bell, 
   TrendingUp, 
-  Users, 
-  AlertCircle, 
-  ShieldCheck, 
-  Activity,
-  Calendar,
-  ChevronRight,
-  Monitor,
-  Zap,
-  Globe
+  PlusCircle, 
+  CheckCircle2,
+  AlertCircle,
+  Menu,
+  X
 } from 'lucide-react';
-import { SharedLayout } from '../components/layout/Layout';
-import { Card } from '../components/common/UI';
+import ThemeToggle from '../components/ThemeToggle';
+import AnalyzeCough from './AnalyzeCough';
 
-const MotionCard = motion(Card);
+const Dashboard = () => {
+  const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState('Dashboard');
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-const StatCard = ({ title, value, icon: Icon, trend, color, delay }) => (
-  <MotionCard 
-    initial={{ y: 40, opacity: 0 }}
-    animate={{ y: 0, opacity: 1 }}
-    transition={{ delay, duration: 0.8, type: "spring" }}
-    whileHover={{ y: -12, backgroundColor: '#FFFFFF', boxShadow: '0 30px 60px -12px rgba(59, 130, 246, 0.15)' }}
-    className="flex items-center space-x-6 p-8 border-2 border-border-light rounded-[2.5rem] bg-gray-50/20 group cursor-pointer relative overflow-hidden transition-colors duration-500"
-  >
-    <div className={`w-16 h-16 rounded-2xl ${color} flex items-center justify-center transition-all group-hover:scale-110 shadow-xl shadow-current/5`}>
-      <Icon size={32} strokeWidth={1.5} />
-    </div>
-    <div className="flex-1">
-      <p className="text-[10px] font-black text-text-muted uppercase tracking-[0.4em] mb-2">{title}</p>
-      <div className="flex items-baseline space-x-3">
-        <h3 className="text-4xl font-black text-text-main poppins leading-none tracking-tighter">{value}</h3>
-        {trend && (
-          <div className="flex items-center space-x-1 text-[10px] font-black text-emerald-500 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-100 italic shadow-sm">
-            <TrendingUp size={10} />
-            <span>{trend}%</span>
-          </div>
-        )}
-      </div>
-    </div>
-    <div className="absolute top-0 right-0 p-6 text-primary opacity-[0.03] -translate-y-6 translate-x-6 group-hover:scale-125 transition-transform duration-700">
-       <Icon size={120} />
-    </div>
-  </MotionCard>
-);
-
-export const Dashboard = () => {
-  const stats = [
-    { title: 'Neural Logs', value: '2.4k', icon: Activity, trend: '15', color: 'bg-cyan/10 text-cyan glow-cyan' },
-    { title: 'Screened Clean', value: '1,842', icon: ShieldCheck, trend: '8', color: 'bg-emerald-50 text-success' },
-    { title: 'Neural Anomalies', value: '412', icon: AlertCircle, trend: '22', color: 'bg-rose-50 text-danger' },
-    { title: 'Clinic Pulse', value: '150+', icon: Globe, trend: '10', color: 'bg-indigo/5 text-indigo' }
+  const menuItems = [
+    { name: 'Dashboard', icon: LayoutDashboard },
+    { name: 'Analyze Cough', icon: Microscope },
+    { name: 'History', icon: History },
+    { name: 'Model Info', icon: Info },
+    { name: 'About', icon: HelpCircle },
   ];
 
-  const chartData = [35, 55, 42, 85, 48, 62, 55, 98, 72, 45, 80, 58];
-  const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+  const stats = [
+    { label: 'Total Analyses', value: '128', icon: TrendingUp, color: 'var(--primary)' },
+    { label: 'Last Result', value: 'Normal', icon: CheckCircle2, color: 'var(--secondary)' },
+    { label: 'Accuracy', value: '98.4%', icon: Info, color: 'var(--primary)' },
+  ];
+
+  const historyData = [
+    { id: 1, date: '2024-03-20', time: '14:30', result: 'Normal', confidence: '99.2%' },
+    { id: 2, date: '2024-03-18', time: '09:15', result: 'Persistent Cough', confidence: '87.5%' },
+    { id: 3, date: '2024-03-15', time: '18:45', result: 'Normal', confidence: '96.8%' },
+    { id: 4, date: '2024-03-10', time: '11:20', result: 'Acute Bronchitis', confidence: '92.1%' },
+  ];
 
   return (
-    <SharedLayout>
-      <div className="space-y-16 pb-24 relative overflow-hidden">
-        <motion.div 
-          initial={{ opacity: 0, y: -30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "circOut" }}
-          className="flex flex-col lg:flex-row lg:items-center justify-between gap-10 border-b-2 border-border-light pb-12"
-        >
-          <div className="space-y-4">
-             <div className="flex items-center space-x-3 text-[10px] font-black text-indigo uppercase tracking-[0.5em] mb-4 opacity-80">
-                <span>DASHBOARD</span>
-                <ChevronRight size={12} className="text-cyan" />
-                <span className="text-cyan glow-cyan">GLOBAL SCREENING ANALYTICS</span>
-             </div>
-             <h1 className="text-5xl font-black text-text-main poppins tracking-tighter leading-none">Intelligence <span className="text-primary italic">Terminal</span></h1>
-             <p className="text-xl text-text-muted font-bold tracking-tight opacity-70">Automated respiratory mapping performance and signal logs.</p>
-          </div>
-          <motion.div 
-            whileHover={{ scale: 1.02 }}
-            className="flex items-center space-x-6 px-10 py-6 bg-white rounded-[2rem] border-2 border-border-light shadow-2xl shadow-primary/5 relative group"
-          >
-            <div className="w-12 h-12 rounded-2xl bg-indigo/5 flex items-center justify-center text-indigo group-hover:bg-indigo group-hover:text-white transition-all shadow-md">
-              <Calendar size={22} />
-            </div>
-            <div>
-               <p className="text-[10px] font-black text-text-muted uppercase tracking-[0.3em] mb-1">Clinic Horizon</p>
-               <span className="text-[12px] font-black text-text-main tracking-widest uppercase italic">March 28, 2026</span>
-            </div>
-          </motion.div>
-        </motion.div>
+    <div className="flex min-h-screen" style={{ backgroundColor: 'var(--bg)', color: 'var(--text-primary)' }}>
+      {/* Mobile Sidebar Overlay */}
+      {isSidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-50 md:hidden backdrop-blur-sm transition-opacity"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
 
-        {/* High-Tech Registry Stats Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
-          {stats.map((s, i) => (
-            <StatCard key={i} {...s} delay={i * 0.15 + 0.5} />
-          ))}
+      {/* Sidebar */}
+      <aside className={`w-64 fixed inset-y-0 left-0 z-50 flex flex-col border-r transition-transform duration-300 md:translate-x-0 ${
+        isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
+      }`} 
+             style={{ backgroundColor: 'var(--card)', borderColor: 'var(--border)' }}>
+        <div className="p-6">
+          <div className="flex items-center justify-between mb-8">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold"
+                   style={{ backgroundColor: 'var(--primary)' }}>
+                C
+              </div>
+              <span className="text-xl font-bold tracking-tight">CoughNet</span>
+            </div>
+            <button className="md:hidden p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
+                    onClick={() => setIsSidebarOpen(false)}>
+              <X size={20} />
+            </button>
+          </div>
+
+          <nav className="space-y-1">
+            {menuItems.map((item) => (
+              <button
+                key={item.name}
+                onClick={() => {
+                  setActiveTab(item.name);
+                  setIsSidebarOpen(false);
+                }}
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group ${
+                  activeTab === item.name ? 'font-semibold' : 'text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800'
+                }`}
+                style={{
+                  backgroundColor: activeTab === item.name ? 'var(--primary)' : 'transparent',
+                  color: activeTab === item.name ? '#fff' : 'var(--text-secondary)'
+                }}
+              >
+                <item.icon size={20} className={activeTab === item.name ? 'text-white' : 'group-hover:text-primary'} />
+                {item.name}
+              </button>
+            ))}
+          </nav>
         </div>
 
-        {/* Neural Analytics & Registry Log */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-          <MotionCard 
-            initial={{ opacity: 0, scale: 0.98 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 1, duration: 1, ease: "circOut" }}
-            className="lg:col-span-2 min-h-[500px] flex flex-col rounded-[3.5rem] border-2 border-border-light shadow-2xl p-12 bg-white relative overflow-hidden group"
+        <div className="mt-auto p-6 border-t" style={{ borderColor: 'var(--border)' }}>
+          <button 
+            onClick={() => navigate('/login')}
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 transition-all duration-200"
           >
-            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-cyan/5 rounded-full -translate-y-1/2 translate-x-1/2 -z-10 blur-[80px]" />
-            
-            <div className="flex items-center justify-between mb-16 relative z-10">
-              <div className="space-y-2">
-                 <h3 className="text-3xl font-black text-text-main poppins tracking-tight">Diagnostic Velocity</h3>
-                 <p className="text-[10px] font-black text-text-muted uppercase tracking-[0.4em] opacity-60">Neural branches processed per clinical module</p>
-              </div>
-              <div className="flex items-center space-x-4">
-                 <div className="hidden sm:flex items-center space-x-3 text-[10px] font-black text-text-muted uppercase tracking-widest px-4 border-r border-border-light">
-                    <div className="w-3 h-3 bg-cyan glow-cyan rounded-full animate-pulse" />
-                    <span>Live Signal Hub</span>
-                 </div>
-                 <select className="text-[10px] font-black bg-gray-50 border-2 border-border-light rounded-xl px-6 py-3 text-text-muted outline-none hover:border-cyan/40 hover:bg-white transition-all cursor-pointer shadow-sm uppercase tracking-widest">
-                   <option>FISCAL Q1 VIEW</option>
-                   <option>6 MONTH RECAP</option>
-                 </select>
-              </div>
-            </div>
-            
-            <div className="flex-1 flex items-end justify-between gap-6 px-4 pb-10 relative z-10">
-              {chartData.map((h, i) => (
-                <div key={i} className="flex-1 flex flex-col items-center group cursor-pointer h-full justify-end relative">
-                  <div className="relative w-full h-full flex items-end">
-                    <motion.div 
-                      initial={{ height: 0 }}
-                      animate={{ height: `${h * 2.8}px` }}
-                      transition={{ delay: 1.8 + i * 0.08, duration: 1.2, ease: "circOut" }}
-                      className="w-full bg-indigo/5 group-hover:bg-cyan rounded-[1.25rem] transition-all duration-500 relative group-hover:shadow-[0_0_30px_rgba(34,211,238,0.5)] glow-cyan overflow-hidden border-2 border-transparent group-hover:border-white/20"
-                    >
-                       <motion.div 
-                         initial={{ bottom: "-100%" }}
-                         animate={{ bottom: "100%" }}
-                         transition={{ duration: 4, repeat: Infinity, ease: "linear", delay: i * 0.2 }}
-                         className="absolute inset-x-0 h-20 bg-gradient-to-t from-white/10 to-transparent opacity-40 pointer-events-none"
-                       />
-                    </motion.div>
-                  </div>
-                  <motion.span 
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 3 }}
-                    className="text-[10px] font-black text-text-muted mt-8 uppercase tracking-[0.2em] group-hover:text-cyan transition-colors italic"
-                  >
-                    {months[i]}
-                  </motion.span>
-                </div>
-              ))}
-            </div>
-          </MotionCard>
+            <LogOut size={20} />
+            Logout
+          </button>
+        </div>
+      </aside>
 
-          <MotionCard 
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 1.3, duration: 1, ease: "circOut" }}
-            className="rounded-[3.5rem] flex flex-col p-12 bg-white border-2 border-border-light shadow-2xl"
-          >
-            <div className="flex items-center justify-between mb-12">
-               <div>
-                  <h3 className="text-3xl font-black text-text-main poppins tracking-tight">Signal Registry</h3>
-                  <p className="text-[10px] font-black text-text-muted uppercase tracking-[0.3em] opacity-60">Verified Clinical Inputs</p>
-               </div>
-               <div className="w-14 h-14 bg-indigo/5 text-indigo rounded-2xl flex items-center justify-center shadow-lg shadow-indigo/5">
-                  <Monitor size={24} />
-               </div>
+      {/* Main Content */}
+      <main className="flex-1 md:ml-64 min-h-screen flex flex-col w-full">
+        {/* Navbar */}
+        <header className="h-16 sticky top-0 z-40 flex items-center justify-between px-4 sm:px-8 border-b backdrop-blur-md bg-opacity-80"
+                style={{ backgroundColor: 'var(--card)', borderColor: 'var(--border)' }}>
+          <div className="flex items-center gap-4 flex-1">
+            <button 
+              className="md:hidden p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
+              onClick={() => setIsSidebarOpen(true)}
+            >
+              <Menu size={24} />
+            </button>
+            <div className="relative w-full max-w-sm hidden sm:block ml-2 md:ml-0">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+              <input type="text" placeholder="Search data..." 
+                     className="w-full pl-10 pr-4 py-2 rounded-full border focus:outline-none focus:ring-2 transition-all text-sm"
+                     style={{ backgroundColor: 'var(--bg)', borderColor: 'var(--border)', '--tw-ring-color': 'var(--primary)' }} />
             </div>
-            
-            <div className="space-y-8 flex-1 overflow-y-auto pr-2 custom-scrollbar">
-              {[
-                { name: 'Patient_104x.wav', result: 'Critical', time: '2m', color: 'text-danger bg-rose-50 border-rose-100' },
-                { name: 'Patient_091k.wav', result: 'Healthy', time: '14m', color: 'text-success bg-emerald-50 border-emerald-100' },
-                { name: 'Patient_211z.wav', result: 'Amber', time: '45m', color: 'text-warning bg-amber-50 border-amber-100' },
-                { name: 'Patient_652q.wav', result: 'Healthy', time: '1h', color: 'text-success bg-emerald-50 border-emerald-100' },
-                { name: 'Patient_101r.wav', result: 'Critical', time: '3h', color: 'text-danger bg-rose-50 border-rose-100' }
-              ].map((item, i) => (
-                <motion.div 
-                  key={i} 
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 2 + i * 0.15 }}
-                  whileHover={{ x: 8, backgroundColor: '#F9FAFB' }}
-                  className="flex items-center justify-between p-5 rounded-[2rem] transition-all cursor-pointer group border-2 border-transparent hover:border-border-light hover:shadow-xl hover:shadow-primary/5"
+          </div>
+
+          <div className="flex items-center gap-2 sm:gap-4">
+            <ThemeToggle />
+            <div className="h-8 w-px bg-gray-200 dark:bg-gray-700 hidden xs:block"></div>
+            <button className="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors relative border"
+                    style={{ borderColor: 'var(--border)', backgroundColor: 'var(--card)' }}>
+              <Bell size={18} style={{ color: 'var(--primary)' }} />
+              <span className="absolute top-2.5 right-2.5 w-2 h-2 bg-red-500 rounded-full border-2" style={{ borderColor: 'var(--card)' }}></span>
+            </button>
+            <div className="flex items-center gap-2 sm:gap-3 pl-2 group cursor-pointer">
+              <div className="text-right hidden sm:block">
+                <p className="text-sm font-semibold truncate max-w-[120px]">User Name</p>
+                <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>Member</p>
+              </div>
+              <div className="w-10 h-10 rounded-full ring-2 ring-offset-2 flex items-center justify-center overflow-hidden shrink-0"
+                   style={{ backgroundColor: 'var(--primary)', ringColor: 'var(--primary)' }}>
+                <User size={20} className="text-white" />
+              </div>
+            </div>
+          </div>
+        </header>
+
+        {/* Dashboard Content */}
+        <div className="p-8 space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+          {activeTab === 'Dashboard' ? (
+            <>
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                  <h1 className="text-3xl font-bold tracking-tight">Welcome back, User 👋</h1>
+                  <p className="mt-1" style={{ color: 'var(--text-secondary)' }}>
+                    Your health data is safe and being analyzed by our AI models.
+                  </p>
+                </div>
+                <button 
+                  onClick={() => setActiveTab('Analyze Cough')}
+                  className="flex items-center justify-center gap-2 px-6 py-3 rounded-2xl font-bold text-white shadow-lg transition-all hover:scale-105 active:scale-95"
+                  style={{ backgroundColor: 'var(--primary)' }}
                 >
-                  <div className="flex items-center space-x-5">
-                    <div className="w-14 h-14 rounded-2xl bg-white border-2 border-border-light flex items-center justify-center text-text-muted group-hover:border-cyan/40 group-hover:text-cyan transition-all shadow-sm">
-                      <Zap size={22} className="group-hover:glow-cyan" />
-                    </div>
-                    <div>
-                      <p className="text-sm font-black text-text-main truncate w-32 poppins tracking-tight leading-tight mb-1">{item.name}</p>
-                      <div className={`inline-flex px-3 py-1 rounded-full text-[8px] font-black uppercase tracking-[0.2em] border-2 shadow-sm ${item.color}`}>
-                         {item.result}
+                  <PlusCircle size={20} />
+                  New Analysis
+                </button>
+              </div>
+
+              {/* Stats Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {stats.map((stat) => (
+                  <div key={stat.label} className="p-6 rounded-2xl border shadow-sm transition-all hover:shadow-md"
+                       style={{ backgroundColor: 'var(--card)', borderColor: 'var(--border)' }}>
+                    <div className="flex items-start justify-between">
+                      <div>
+                        <p className="text-sm font-medium mb-1" style={{ color: 'var(--text-secondary)' }}>{stat.label}</p>
+                        <h3 className="text-2xl font-bold">{stat.value}</h3>
+                      </div>
+                      <div className="p-3 rounded-xl scale-110" style={{ backgroundColor: `${stat.color}15`, color: stat.color }}>
+                        <stat.icon size={24} />
                       </div>
                     </div>
                   </div>
-                  <div className="text-right">
-                    <p className="text-[10px] font-black text-text-muted opacity-40 group-hover:opacity-100 transition-opacity tracking-widest">{item.time} AGO</p>
-                    <ChevronRight size={16} className="text-border-light ml-auto group-hover:text-indigo group-hover:translate-x-1 transition-all mt-1" />
+                ))}
+              </div>
+
+              {/* Main Action Card */}
+              <div 
+                onClick={() => setActiveTab('Analyze Cough')}
+                className="relative overflow-hidden rounded-3xl p-8 border group cursor-pointer transition-all hover:border-primary/50"
+                style={{ backgroundColor: 'var(--card)', borderColor: 'var(--border)' }}
+              >
+                <div className="relative z-10 flex flex-col md:flex-row items-center gap-8">
+                  <div className="flex-1 text-center md:text-left">
+                    <h2 className="text-2xl font-bold mb-4">Analyze New Cough 🫁</h2>
+                    <p className="mb-6 max-w-md" style={{ color: 'var(--text-secondary)' }}>
+                      Upload a 10-second recording of your cough. Our advanced AI will analyze the acoustic patterns to provide early medical insights.
+                    </p>
+                    <button 
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setActiveTab('Analyze Cough');
+                      }}
+                      className="px-8 py-3 rounded-xl font-bold text-white shadow-xl transition-all hover:px-10"
+                      style={{ backgroundColor: 'var(--primary)' }}
+                    >
+                      Start Analysis
+                    </button>
                   </div>
-                </motion.div>
-              ))}
+                  <div className="w-full md:w-1/3 aspect-video rounded-2xl flex items-center justify-center bg-blue-50 dark:bg-blue-900/20 group-hover:scale-105 transition-transform duration-500">
+                    <div className="flex gap-1 items-end h-16">
+                      {[40, 70, 45, 90, 65, 80, 50, 85, 40].map((h, i) => (
+                        <div key={i} className="w-2 rounded-full bg-primary animate-pulse" 
+                             style={{ height: `${h}%`, backgroundColor: 'var(--primary)', animationDelay: `${i * 100}ms` }}></div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+                {/* Abstract Background Decor */}
+                <div className="absolute -right-20 -bottom-20 w-64 h-64 rounded-full blur-3xl opacity-10" style={{ backgroundColor: 'var(--primary)' }}></div>
+              </div>
+
+              {/* Recent Activity Table */}
+              <div className="rounded-3xl border overflow-hidden" style={{ backgroundColor: 'var(--card)', borderColor: 'var(--border)' }}>
+                <div className="p-6 border-b flex items-center justify-between" style={{ borderColor: 'var(--border)' }}>
+                  <h3 className="text-lg font-bold">Recent Analyses</h3>
+                  <button className="text-sm font-semibold hover:underline" style={{ color: 'var(--primary)' }}>View all</button>
+                </div>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left">
+                    <thead style={{ backgroundColor: 'var(--bg)' }}>
+                      <tr>
+                        <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider" style={{ color: 'var(--text-secondary)' }}>Date</th>
+                        <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider" style={{ color: 'var(--text-secondary)' }}>Result</th>
+                        <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider" style={{ color: 'var(--text-secondary)' }}>Confidence</th>
+                        <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider" style={{ color: 'var(--text-secondary)' }}>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y" style={{ divideColor: 'var(--border)' }}>
+                      {historyData.map((row) => (
+                        <tr key={row.id} className="hover:bg-gray-50 dark:hover:bg-gray-800/30 transition-colors">
+                          <td className="px-6 py-4">
+                            <p className="font-medium">{row.date}</p>
+                            <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>{row.time}</p>
+                          </td>
+                          <td className="px-6 py-4">
+                            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${
+                              row.result === 'Normal' ? 'bg-emerald-50 text-emerald-700 border-emerald-100' : 'bg-orange-50 text-orange-700 border-orange-100'
+                            }`}>
+                              {row.result}
+                            </span>
+                          </td>
+                          <td className="px-6 py-4">
+                            <div className="flex items-center gap-2">
+                              <div className="flex-1 h-2 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+                                <div className="h-full rounded-full" style={{ width: row.confidence, backgroundColor: 'var(--primary)' }}></div>
+                              </div>
+                              <span className="text-xs font-bold">{row.confidence}</span>
+                            </div>
+                          </td>
+                          <td className="px-6 py-4">
+                            <button 
+                              onClick={() => navigate('/result', { state: { status: row.result === 'Normal' ? 'Healthy' : 'Infected', confidence: row.confidence.replace('%', '') } })}
+                              className="text-sm font-bold transition-opacity hover:opacity-70" 
+                              style={{ color: 'var(--primary)' }}
+                            >
+                              Details
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </>
+          ) : activeTab === 'Analyze Cough' ? (
+            <AnalyzeCough />
+          ) : (
+            <div className="flex flex-col items-center justify-center p-20 text-center">
+              <div className="w-20 h-20 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mb-6">
+                <LayoutDashboard size={40} className="text-gray-400" />
+              </div>
+              <h2 className="text-2xl font-bold mb-2">Coming Soon</h2>
+              <p className="text-gray-500 max-w-sm">
+                The {activeTab} section is currently under development. Please check back later!
+              </p>
+              <button 
+                onClick={() => setActiveTab('Dashboard')}
+                className="mt-8 px-6 py-2 bg-blue-600 text-white rounded-xl font-bold"
+              >
+                Back to Dashboard
+              </button>
             </div>
-            
-            <Button variant="ghost" className="mt-12 w-full py-5 text-[11px] font-black text-indigo bg-indigo/5 rounded-2xl hover:bg-indigo/10 transition-all uppercase tracking-[0.4em] shadow-lg shadow-indigo/5 border-2 border-indigo/10">
-              EXPLORE FULL ARCHIVE
-            </Button>
-          </MotionCard>
+          )}
         </div>
-      </div>
-    </SharedLayout>
+      </main>
+    </div>
   );
 };
+
+export default Dashboard;

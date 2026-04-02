@@ -1,0 +1,25 @@
+:root {
+--bg: #F9FAFB;
+--card: #FFFFFF;
+--text-primary: #1F2937;
+--text-secondary: #6B7280;
+--border: #E5E7EB;
+--primary: #2563EB;
+--secondary: #10B981;
+--danger: #EF4444;
+}
+
+.dark {
+--bg: #111827;
+--card: #1F2937;
+--text-primary: #F9FAFB;
+--text-secondary: #9CA3AF;
+--border: #374151;
+--primary: #2563EB;
+--secondary: #10B981;
+--danger: #EF4444;
+}
+
+* {
+  transition: background 0.3s ease, color 0.3s ease;
+  }
